@@ -13,3 +13,7 @@ class ChartPage:
     def last_value_of(self, metric):
         metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").last
         return metric.get_attribute("aria-label")
+
+    def last_full_quarter_value_of(self, metric):
+        metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").nth(-2)
+        return metric.get_attribute("aria-label")
