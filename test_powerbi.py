@@ -1,7 +1,6 @@
 import re
 from playwright.sync_api import Page, expect
 import pytest
-from pytest_check import check
 
 from chartpage import ChartPage
 from test_data import check_values, check_last_full_quarter_values
@@ -32,11 +31,10 @@ def test_chart_has_all_metrics(chart_page):
     (expect(chart_page.first_chart_plots.last.locator("path"))
      .to_have_count(3))
 
+@pytest.mark.parametrize("metric, value", check_last_full_quarter_values.items())
+def test_last_full_quarter_chart_values(chart_page, metric, value):
+    assert chart_page.last_full_quarter_value_of(metric) == value
 
-def test_last_full_quarter_chart_values(chart_page):
-    for metric, value in check_last_full_quarter_values.items():
-        check.equal(chart_page.last_full_quarter_value_of(metric), value)
-
-def test_latest_chart_values(chart_page):
-    for metric, value in check_values.items():
-        check.equal(chart_page.last_value_of(metric), value)
+@pytest.mark.parametrize("metric, value", check_values.items())
+def test_latest_chart_values(chart_page, metric, value):
+    assert chart_page.last_value_of(metric) == value

@@ -10,10 +10,12 @@ class ChartPage:
     def navigate(self):
         self.page.goto("https://www.lowcarboncontracts.uk/resources/scheme-dashboards/cfd-historical-data-dashboard/")
 
-    def last_value_of(self, metric):
-        metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").last
+    def nth_value_of(self, metric, index):
+        metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").nth(index)
         return metric.get_attribute("aria-label")
 
+    def last_value_of(self, metric):
+        return self.nth_value_of(metric, -1)
+
     def last_full_quarter_value_of(self, metric):
-        metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").nth(-2)
-        return metric.get_attribute("aria-label")
+        return self.nth_value_of(metric, -2)
