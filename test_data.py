@@ -1,3 +1,5 @@
+import csv
+
 CfD_actuals_historic_values = {
     "Advanced Conversion Technology": ["null", "null"],
     "Biomass Conversion": ["1816435.796", "163300.341"],
@@ -8,7 +10,10 @@ CfD_actuals_historic_values = {
     "Solar PV": ["2295.431", "132.673"]
 }
 
-CM_forecast_cost_values = {
-
-}
-
+def data_from_csv(csv_name):
+    with open(csv_name) as csvfile:
+        reader = csv.DictReader(csvfile)
+        data_values = []
+        for row in reader:
+            data_values.append(row)
+    return data_values
