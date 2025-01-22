@@ -10,6 +10,8 @@ class ChartPage:
     def navigate(self):
         self.page.goto("https://www.lowcarboncontracts.uk/resources/scheme-dashboards/cfd-historical-data-dashboard/")
 
+    def metric_elements(self, metric):
+        return self.first_chart_plots.first.get_by_label(metric).get_by_role("option")
+
     def nth_value_of(self, metric, index):
-        metric = self.first_chart_plots.first.get_by_label(metric).get_by_role("option").nth(index)
-        return metric.get_attribute("aria-label")
+        return self.metric_elements(metric).nth(index).get_attribute("aria-label")
