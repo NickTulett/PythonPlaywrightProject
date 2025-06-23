@@ -27,12 +27,8 @@ def test_opening_hidden_pages(juice_shop, page_name, api_request_context):
     juice_shop.open_page(page_name)
     check.equal(True, juice_shop.check_challenge_solved(page_name, api_request_context))
 
-def test_injecting_payload(juice_shop, api_request_context):
+@pytest.mark.parametrize("payload", ["Bonus Payload", "DOM XSS"])
+def test_injecting_xss(juice_shop, payload, api_request_context):
     juice_shop.open_shop()
-    juice_shop.search_for('<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/771984076&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>')
-    check.equal(True, juice_shop.check_challenge_solved("Bonus Payload", api_request_context))
-
-def test_injecting_xss(juice_shop, api_request_context):
-    juice_shop.open_shop()
-    juice_shop.search_for('<iframe src="javascript:alert(`xss`)">')
-    check.equal(True, juice_shop.check_challenge_solved("DOM XSS", api_request_context))
+    juice_shop.search_for(juice_shop.xss[payload])
+    check.equal(True, juice_shop.check_challenge_solved(payload, api_request_context))
